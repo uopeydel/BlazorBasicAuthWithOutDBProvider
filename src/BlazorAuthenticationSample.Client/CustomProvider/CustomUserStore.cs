@@ -2,22 +2,20 @@
 using System;
 using System.Threading.Tasks;
 using System.Threading;
-
+using System.Collections.Generic;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace BlazorAuthenticationSample.Client.CustomProvider
 {
-    public class CustomUserStore : IUserStore<ApplicationUser>,
-         IUserPasswordStore<ApplicationUser>
+    public class CustomUserStore : IUserStore<ApplicationUser>, IUserPasswordStore<ApplicationUser> //, IUserClaimStore<ApplicationUser>
     {
-        //private readonly DapperUsersTable _usersTable;
 
-        public CustomUserStore(
-            //DapperUsersTable usersTable
-            )
+        public CustomUserStore()
         {
-            //_usersTable = usersTable;
         }
 
+      
         #region createuser
         public async Task<IdentityResult> CreateAsync(ApplicationUser user,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -73,10 +71,11 @@ namespace BlazorAuthenticationSample.Client.CustomProvider
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (userName == null) throw new ArgumentNullException(nameof(userName));
-            return new ApplicationUser() {UserId = userName };
+            return new ApplicationUser() { UserId = userName };
             //return await _usersTable.FindByNameAsync(userName);
         }
 
+        
         public Task<string> GetNormalizedUserNameAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
@@ -121,11 +120,13 @@ namespace BlazorAuthenticationSample.Client.CustomProvider
             //return Task.FromResult(user.UserName);
         }
 
+        
         public Task<bool> HasPasswordAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
+      
         public Task SetNormalizedUserNameAsync(ApplicationUser user, string normalizedName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -158,5 +159,31 @@ namespace BlazorAuthenticationSample.Client.CustomProvider
         {
             throw new NotImplementedException();
         }
+
+        //#region Claim
+        //public Task RemoveClaimsAsync(ApplicationUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public Task ReplaceClaimAsync(ApplicationUser user, Claim claim, Claim newClaim, CancellationToken cancellationToken)
+        //{
+        //    throw new NotImplementedException();
+        //}
+        //public Task<IList<ApplicationUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
+        //{
+        //    throw new NotImplementedException();
+        //}
+        //public Task<IList<Claim>> GetClaimsAsync(ApplicationUser user, CancellationToken cancellationToken)
+        //{
+        //    ClaimsPrincipal principal = .Current.User as ClaimsPrincipal;
+        //    throw new NotImplementedException();
+        //}
+        //public Task AddClaimsAsync(ApplicationUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //#endregion
     }
 }

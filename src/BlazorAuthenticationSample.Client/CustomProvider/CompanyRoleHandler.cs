@@ -38,7 +38,6 @@ namespace BlazorAuthenticationSample.Client.CustomProvider
                 context.Succeed(requirement);
             }
             return;
-            //return Task.CompletedTask;
         }
     }
 }

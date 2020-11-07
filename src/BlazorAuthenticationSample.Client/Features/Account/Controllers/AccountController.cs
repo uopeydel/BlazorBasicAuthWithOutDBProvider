@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using BlazorAuthenticationSample.Client.CustomProvider;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using System.Collections.Generic;
 
 namespace BlazorAuthenticationSample.Client.Features.Accounts.Controllers
 {
@@ -27,7 +30,24 @@ namespace BlazorAuthenticationSample.Client.Features.Accounts.Controllers
         public async Task<IActionResult> SignInActual(string t)
         {
             var hardcode = true;
-            await _signInManager.SignInAsync(new ApplicationUser { UserId = "qwe userId", PassWord = "asd userPassword" }, true);
+
+            var userData = new ApplicationUser { UserId = "qwe userId", PassWord = "asd userPassword" };
+            await _signInManager.SignInWithClaimsAsync(userData, false ,new List<Claim> {  new Claim("test", "Hello") });
+
+
+            //await _userManager.AddClaimAsync(userData, new Claim("test", "Hello"));
+            //var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(userData);
+            //await _signInManager.RefreshSignInAsync(userData);
+
+            //await _signInManager.SignOutAsync();
+            //await _signInManager.Context.SignOutAsync();
+            //ClaimsIdentity identity = User.Identity as ClaimsIdentity;
+            //Claim claim0 = new Claim(ClaimTypes.Role, "testdatarole", ClaimValueTypes.String );
+            //identity.AddClaim(claim0);
+            //Claim claim1 = new Claim(ClaimTypes.NameIdentifier, "testdataroleNameIdentifier", ClaimValueTypes.String);
+            //identity.AddClaim(claim1);
+            //await _signInManager.Context.SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(identity));
+
             if (hardcode)
             {
 

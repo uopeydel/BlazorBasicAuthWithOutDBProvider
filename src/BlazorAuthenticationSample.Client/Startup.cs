@@ -25,16 +25,11 @@ namespace BlazorAuthenticationSample.Client
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-
+             
             services.AddDefaultIdentity<ApplicationUser>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders(); 
 
-            //services. AddIdentity<ApplicationUser , ApplicationRole>()
-            //   .AddDefaultTokenProviders();
-            services.AddTransient<IUserStore<ApplicationUser>, CustomUserStore>();
-            //services.AddTransient<IRoleStore<ApplicationRole>, CustomRoleStore>();
+            services.AddTransient<IUserStore<ApplicationUser>, CustomUserStore>(); 
 
             services.AddAuthorization(options =>
             {
@@ -49,24 +44,18 @@ namespace BlazorAuthenticationSample.Client
             services.AddRazorPages();
             services.AddControllers();
             services.AddServerSideBlazor();
-            //services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
-
+            
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
             services.AddScoped<IHostEnvironmentAuthenticationStateProvider>(sp =>
-            {
-                // this is safe because 
-                //     the `RevalidatingIdentityAuthenticationStateProvider` extends the `ServerAuthenticationStateProvider`
+            { 
                 var provider = (ServerAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>();
                 return provider;
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env
-            //, DbContextOptions<ApplicationDbContext> identityDbContextOptions, 
-            //UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env 
             )
-        {
-            //EnsureTestUsers(identityDbContextOptions, userManager, roleManager);
+        { 
 
             if (env.IsDevelopment())
             {
@@ -94,42 +83,6 @@ namespace BlazorAuthenticationSample.Client
                 endpoints.MapFallbackToPage("/_Host");
             });
         }
-
-        //private static void EnsureTestUsers(DbContextOptions<ApplicationDbContext> identityDbContextOptions, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
-        //{
-        //    using (var db = new ApplicationDbContext(identityDbContextOptions))
-        //    {
-        //        db.Database.EnsureCreated();
-        //    }
-
-        //    var user = userManager.FindByEmailAsync("user@example.com").GetAwaiter().GetResult();
-        //    if (user == null)
-        //    {
-        //        userManager.CreateAsync(new IdentityUser("user@example.com") { Email = "user@example.com", EmailConfirmed = true }, "1234").GetAwaiter().GetResult();
-        //    }
-
-        //    var userWithUnconfirmedEmailAddress = userManager.FindByEmailAsync("anotheruser@example.com").GetAwaiter().GetResult();
-        //    if (userWithUnconfirmedEmailAddress == null)
-        //    {
-        //        userManager.CreateAsync(new IdentityUser("anotheruser@example.com") { Email = "anotheruser@example.com", EmailConfirmed = false }, "1234").GetAwaiter().GetResult();
-        //    }
-
-        //    var admin = userManager.FindByEmailAsync("admin@example.com").GetAwaiter().GetResult();
-        //    if (admin == null)
-        //    {
-        //        userManager.CreateAsync(new IdentityUser("admin@example.com") { Email = "admin@example.com", EmailConfirmed = true }, "1234").GetAwaiter().GetResult();
-        //        admin = userManager.FindByEmailAsync("admin@example.com").GetAwaiter().GetResult();
-        //    }
-
-        //    if (!roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult())
-        //    {
-        //        roleManager.CreateAsync(new IdentityRole("Admin")).GetAwaiter().GetResult();
-        //    }
-
-        //    if (!userManager.IsInRoleAsync(admin, "Admin").GetAwaiter().GetResult())
-        //    {
-        //        userManager.AddToRoleAsync(admin, "Admin").GetAwaiter().GetResult();
-        //    }
-        //}
+         
     }
 }

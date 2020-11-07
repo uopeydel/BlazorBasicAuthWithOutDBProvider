@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 
 namespace BlazorAuthenticationSample.Client.CustomProvider
 {
-    public class ApplicationRole
+    public class BasicAuthenticationHandler
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public string Name { get; set; }
     }
 }
